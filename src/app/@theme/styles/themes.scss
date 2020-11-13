@@ -5,7 +5,9 @@
 // material themes
 @import './material/material-dark';
 @import './material/material-light';
-
+@import '~@swimlane/ngx-datatable/index.css';
+@import '~@swimlane/ngx-datatable/themes/bootstrap.scss';
+@import '~@swimlane/ngx-datatable/assets/icons.css';
 $nb-themes: nb-register-theme((
   layout-padding-top: 2.25rem,
 

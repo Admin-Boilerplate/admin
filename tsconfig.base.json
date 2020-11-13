@@ -1,0 +1,62 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "./",
+        "importHelpers": true,
+        "module": "esnext",
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es2015",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "lib": [
+            "es2017",
+            "dom"
+        ],
+        "paths": {
+            "@pages/*": [
+                "src/app/pages/*"
+            ],
+            "@environments/*": ["src/environments/*"],
+            "@components/*": [
+                "src/app/@core/components/*",
+                "src/app/@theme/components/*"
+            ],
+            "@directives/*": [
+                "src/app/@core/directives/*",
+                "src/app/@theme/directives/*"
+            ],
+            "@services/http/*": [
+                "src/app/@core/services/http/*"
+            ],
+            "@services/general/*": [
+                "src/app/@core/services/general/*"
+            ],
+            "@services/*": ["src/app/@core/services/*"],
+            "@pipes/*": [
+                "src/app/@core/pipes/*",
+                "src/app/@theme/pipes/*"
+            ],
+            "@interceptors/*": [
+                "src/app/@core/interceptors/*"
+            ],
+            "@guards/*": [
+                "src/app/@core/guards/*"
+            ],
+            "@core/*": [
+                "src/app/@core/*"
+            ],
+            "@translations/*": ["src/translations/*"]
+        },
+        "plugins": [
+            {
+                "name": "tslint-language-service"
+            }
+        ]
+    }
+}
