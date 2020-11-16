@@ -3,6 +3,9 @@
 
 // themes - our custom or/and out of the box themes
 @import 'themes';
+@import '~@swimlane/ngx-datatable/index.css';
+@import '~@swimlane/ngx-datatable/themes/bootstrap.scss';
+@import '~@swimlane/ngx-datatable/assets/icons.css';
 
 // framework component themes (styles tied to theme variables)
 @import '~@nebular/theme/styles/globals';
