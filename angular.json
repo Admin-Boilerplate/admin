@@ -180,11 +180,11 @@
     "defaultProject": "ngx-admin-demo",
     "schematics": {
         "@schematics/angular:component": {
-            "prefix": "ff",
+            "prefix": "admin",
             "style": "scss"
         },
         "@schematics/angular:directive": {
-            "prefix": "ff"
+            "prefix": "admin"
         }
     },
     "cli": {

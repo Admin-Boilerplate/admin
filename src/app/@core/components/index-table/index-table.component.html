@@ -1,0 +1,55 @@
+<nb-card>
+    <nb-card-header>
+        <div class="d-flex justify-content-between align-items-center">
+            <span>List</span>
+            <div>
+                <a nbButton
+                   [routerLink]="['create']"
+                   status="success"
+                   size="small">
+                    <nb-icon icon="plus"></nb-icon>
+                    ΔΗΜΙΟΥΡΓΙΑ
+                </a>
+                <nb-actions *ngIf="i?.selected?.length" class="d-inline-block ml-2">
+                    <nb-action icon="more-horizontal"
+                               nbContextMenuTag="index-actions"
+                               [nbContextMenu]="contextMenu">
+                    </nb-action>
+                </nb-actions>
+            </div>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <ngx-datatable *ngIf="i?.models?.length"
+                       [rows]="i.models"
+                       [selectionType]="'checkbox'"
+                       [selected]="i.selected"
+                       [columns]="columns"
+                       columnMode="force"
+                       [rowHeight]="false"
+                       footerHeight="auto"
+                       [externalPaging]="false"
+                       headerHeight="auto"
+                       (select)="i.onSelect($event)"
+                       class="responsive table rounded table-hover table-bordered bootstrap table-light">
+        </ngx-datatable>
+    </nb-card-body>
+</nb-card>
+
+<ng-template #actionsTemplate let-row="row" let-value="value">
+    <a nbButton
+       size="small"
+       class="mr-2"
+       [routerLink]="['edit', value]"
+       shape="round"
+       status="primary">
+        <nb-icon icon="edit"></nb-icon>
+    </a>
+    <a nbButton
+       size="small"
+       (click)="i.delete(value)"
+       shape="round"
+       status="danger">
+        <nb-icon icon="trash"></nb-icon>
+    </a>
+</ng-template>

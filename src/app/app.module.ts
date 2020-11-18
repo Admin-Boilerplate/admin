@@ -24,7 +24,6 @@ import {NgxSpinnerModule} from "ngx-spinner";
         AppRoutingModule,
 
         ThemeModule.forRoot(),
-
         NbSidebarModule.forRoot(),
         NbMenuModule.forRoot(),
         NbDatepickerModule.forRoot(),

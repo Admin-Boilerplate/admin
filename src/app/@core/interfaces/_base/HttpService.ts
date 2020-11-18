@@ -1,6 +1,6 @@
 
 import { Observable, OperatorFunction } from "rxjs";
-import {IJsonResponse} from "../JsonResponse";
+import {IJsonResponse} from "../_helpers/JsonResponse";
 import {IPaginate} from "./Paginate";
 
 export interface IHttpService<T> {
@@ -21,6 +21,8 @@ export interface IHttpService<T> {
     update(id: string, data: Partial<T>): Observable<IJsonResponse<T>>;
 
     delete(id: string): Observable<{ success: boolean }>;
+
+    deleteMany(ids: string[]): Observable<{ success: boolean }>;
 
     count(id: string): Observable<IJsonResponse<number>>;
 

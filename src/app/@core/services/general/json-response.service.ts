@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { OperatorFunction } from "rxjs";
 import { map } from "rxjs/operators";
-import {IError, IJsonResponse} from "../../interfaces/JsonResponse";
+import {IError, IJsonResponse} from "../../interfaces/_helpers/JsonResponse";
 
 @Injectable({
     providedIn: "root",

@@ -3,10 +3,10 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import {ToasterService} from "../../general/toaster.service";
-import {IJsonResponse} from "../../../interfaces/JsonResponse";
+import {IJsonResponse} from "../../../interfaces/_helpers/JsonResponse";
 import {JsonResponse} from "../../general/json-response.service";
-import {IPaginate} from "../../../interfaces/base/Paginate";
-import {IHttpService} from "../../../interfaces/base/HttpService";
+import {IPaginate} from "../../../interfaces/_base/Paginate";
+import {IHttpService} from "../../../interfaces/_base/HttpService";
 
 @Injectable({
     providedIn: "root",
@@ -23,7 +23,6 @@ export class HttpService<T = any> implements IHttpService<T> {
     }
 
     public paginate(limit: any = this.limit, page: any = this.page): Observable<IJsonResponse<IPaginate<T>>> {
-        console.log("paginate");
         return this.http
             .get(`${this.baseUrl}/paginate`, { params: { limit, page } })
             .pipe(JsonResponse.map<IPaginate<T>>(), this.check());
@@ -50,6 +49,10 @@ export class HttpService<T = any> implements IHttpService<T> {
 
     public delete(id: string): Observable<{ success: boolean }> {
         return this.http.delete(`${this.baseUrl}/${id}`).pipe(JsonResponse.map<{ success: boolean }>(), this.check());
+    }
+
+    public deleteMany(ids: string[]): Observable<{ success: boolean }> {
+        return this.http.request("delete", `${this.baseUrl}/many`, {body: ids}).pipe(JsonResponse.map<{ success: boolean }>(), this.check());
     }
 
     public count(): Observable<IJsonResponse<number>> {

@@ -1,6 +1,6 @@
 import {ModuleWithProviders, NgModule, Optional, SkipSelf} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {NbAuthModule, NbDummyAuthStrategy} from "@nebular/auth";
+import {NbAuthJWTToken, NbAuthModule, NbPasswordAuthStrategy, NbTokenLocalStorage, NbTokenStorage} from "@nebular/auth";
 import {NbRoleProvider, NbSecurityModule} from "@nebular/security";
 import {of as observableOf} from "rxjs";
 
@@ -8,6 +8,10 @@ import {throwIfAlreadyLoaded} from "./module-import-guard";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {AuthInterceptor} from "./interceptors/HttpInterceptor";
 import {LayoutService} from "./services/general/layout.service";
+import {FormBuilder} from "@angular/forms";
+import {environment} from "../../environments/environment";
+import {RoleProvider} from "./providers/role.provider";
+import {AccessControlService} from "./services/general/access-control.service";
 
 const socialLinks = [
     {
@@ -28,25 +32,28 @@ const socialLinks = [
 ];
 
 const DATA_SERVICES = [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
 ];
-
-export class NbSimpleRoleProvider extends NbRoleProvider {
-    getRole() {
-        // here you could provide any role based on any auth flow
-        return observableOf("guest");
-    }
-}
 
 export const NB_CORE_PROVIDERS = [
     ...DATA_SERVICES,
     ...NbAuthModule.forRoot({
-
         strategies: [
-            NbDummyAuthStrategy.setup({
+            NbPasswordAuthStrategy.setup({
                 name: "email",
-                delay: 3000,
-            }),
+                token: {
+                    class: NbAuthJWTToken,
+                    key: "token"
+                },
+                baseEndpoint: environment.serverUrl,
+                login: {
+                    redirect: {
+                        success: "/pages/dashboard",
+                        failure: null
+                    },
+                    endpoint: "/auth/login"
+                }
+            })
         ],
         forms: {
             login: {
@@ -57,25 +64,15 @@ export const NB_CORE_PROVIDERS = [
             },
         },
     }).providers,
-
     NbSecurityModule.forRoot({
-        accessControl: {
-            guest: {
-                view: "*",
-            },
-            user: {
-                parent: "guest",
-                create: "*",
-                edit: "*",
-                remove: "*",
-            },
-        },
+        accessControl: AccessControlService.access,
     }).providers,
-
     {
-        provide: NbRoleProvider, useClass: NbSimpleRoleProvider,
+        provide: NbRoleProvider, useClass: RoleProvider,
     },
+    FormBuilder,
     LayoutService,
+    NbTokenLocalStorage
 ];
 
 @NgModule({

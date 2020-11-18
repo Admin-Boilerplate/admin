@@ -1,21 +1,25 @@
-import {AbstractType, Component, InjectionToken, Type} from "@angular/core";
-import {IPage, IPaginate} from "../../../interfaces/base/Paginate";
-import {IHttpService} from "../../../interfaces/base/HttpService";
+import {AbstractType, ChangeDetectorRef, Component, InjectionToken, Type, ViewChild} from "@angular/core";
+import {IPage, IPaginate} from "../../../interfaces/_base/Paginate";
+import {IHttpService} from "../../../interfaces/_base/HttpService";
 import {Router} from "@angular/router";
 import {ToasterService} from "../../../services/general/toaster.service";
 import {remove} from "lodash";
 import {HelpersService} from "../../../services/general/helpers.service";
 import {finalize} from "rxjs/operators";
-import {IJsonResponse} from "../../../interfaces/JsonResponse";
+import {IJsonResponse} from "../../../interfaces/_helpers/JsonResponse";
 import {SwalService} from "../../../services/general/swal.service";
 import {Loading} from "../../../services/general/loading.service";
+import {IndexTableComponent} from "../../index-table/index-table.component";
+import {IModel} from "../../../interfaces/_base/Model";
 
 
 @Component({
-    selector: "app-index",
+    selector: "admin-index",
     template: ""
 })
-export class IndexComponent<T = any> {
+export class IndexComponent<T extends IModel = {} & IModel> {
+    @ViewChild(IndexTableComponent)
+    public table: IndexTableComponent;
 
     public models: T[] = [];
 
@@ -23,6 +27,9 @@ export class IndexComponent<T = any> {
 
     // Handling pagination
     public page: IPage = {};
+
+    // Table events
+    public selected: T[] = [];
 
     // Injected
     public service: IHttpService<T>;
@@ -93,6 +100,38 @@ export class IndexComponent<T = any> {
 
     public onDeleteRejected(id: string) {
         // Override to do stuff after delete rejection
+    }
+
+    public deleteMany(ids: string[]) {
+        SwalService.question.delete(SwalService.yesNoBasicOptions).then((answer) => {
+            if (answer.dismiss) {
+                this.onMassDeleteRejected(ids);
+                return;
+            }
+
+            this.beforeRequest();
+            this.service
+                .deleteMany(ids)
+                .pipe(finalize(this.afterRequest.bind(this)))
+                .subscribe((res) => this.afterMassDelete(res, ids));
+        });
+    }
+
+    public afterMassDelete(response: {success: boolean}, ids: string[]) {
+        if (response.success) {
+            remove(this.models, (model: any) => ids.includes(model._id));
+            this.models = [...this.models];
+            SwalService.success.delete();
+        }
+    }
+
+    public onMassDeleteRejected(ids: string[]) {
+        // Override to do stuff after delete rejection
+    }
+
+    public onSelect({ selected }: {selected: T[]}) {
+        this.selected.splice(0, this.selected.length);
+        this.selected.push(...selected);
     }
 
     public beforeRequest() {

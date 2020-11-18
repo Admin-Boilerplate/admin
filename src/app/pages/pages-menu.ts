@@ -8,16 +8,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
         home: true,
     },
     {
-        title: "FEATURES",
-        group: true,
-    },
-    {
         title: "Χρήστες",
         icon: "person-outline",
         children: [
             {
                 title: "Λίστα χρηστών",
                 link: "/pages/users"
+            },
+            {
+                title: "Δημιουργία χρήστη",
+                link: "/pages/users/create"
             }
         ]
     },

@@ -1,0 +1,38 @@
+<nb-card status="{{ce.edit ? 'primary' : 'success'}}">
+    <nb-card-header>
+        {{ce.edit ? 'Επεξεργασία' : 'Δημιουργία'}}
+    </nb-card-header>
+    <nb-card-body>
+        <div class="row">
+            <ng-content></ng-content>
+        </div>
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="row">
+            <div class="col-12 text-right">
+                <a nbButton
+                   [routerLink]="[ce.edit ? '../../' : '../']"
+                   status="basic"
+                   class="mr-2">
+                    ΠΙΣΩ ΣΤΗ ΛΙΣΤΑ
+                </a>
+                <button nbButton
+                        (click)="ce.update()"
+                        [disabled]="ce.form.invalid"
+                        status="primary"
+                        *ngIf="ce.edit">
+                    <nb-icon icon="checkmark"></nb-icon>
+                    ΕΝΗΜΕΡΩΣΗ
+                </button>
+                <button nbButton
+                        (click)="ce.create()"
+                        [disabled]="ce.form.invalid"
+                        status="success"
+                        *ngIf="!ce.edit">
+                    <nb-icon icon="save"></nb-icon>
+                        ΑΠΟΘΗΚΕΥΣΗ
+                </button>
+            </div>
+        </div>
+    </nb-card-footer>
+</nb-card>

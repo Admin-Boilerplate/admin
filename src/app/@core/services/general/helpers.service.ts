@@ -5,7 +5,7 @@ import { Injectable, Injector } from "@angular/core";
 })
 export class HelpersService {
     public static injector: Injector;
-    public static languages: string[];
+    public static languages: string[] = [];
     public static lang: string;
 
     public static isMultilang(obj: any) {

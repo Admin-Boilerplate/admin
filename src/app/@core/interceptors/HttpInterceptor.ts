@@ -5,6 +5,7 @@ import {LocalStorageService} from "ngx-webstorage";
 import {catchError} from "rxjs/operators";
 import {ToasterService} from "../services/general/toaster.service";
 import {environment} from "../../../environments/environment";
+import {NbTokenLocalStorage} from "@nebular/auth";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -14,7 +15,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
     constructor(
         private _toasterService: ToasterService,
-        private ls: LocalStorageService
+        private ls: LocalStorageService,
+        private tokenService: NbTokenLocalStorage
     ) {
     }
 
@@ -22,7 +24,7 @@ export class AuthInterceptor implements HttpInterceptor {
         let Req: HttpRequest<any>;
         const url = req.url;
 
-        const _token: string = this.ls.retrieve("token");
+        const _token: string = this.tokenService.get().getValue();
         const language: string = this.ls.retrieve("language");
 
         if (_token) {
