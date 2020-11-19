@@ -4,6 +4,7 @@ import { IndexTableComponent } from './index-table.component';
 import {NgxDatatableModule} from "@swimlane/ngx-datatable";
 import {NbActionsModule, NbButtonModule, NbCardModule, NbContextMenuModule, NbIconModule} from "@nebular/theme";
 import {RouterModule} from "@angular/router";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 
@@ -20,7 +21,8 @@ import {RouterModule} from "@angular/router";
         NbIconModule,
         NbCardModule,
         NbActionsModule,
-        NbContextMenuModule
+        NbContextMenuModule,
+        TranslateModule
     ]
 })
 export class IndexTableModule { }

@@ -1,0 +1,8 @@
+<ng-container [formGroup]="form">
+    <admin-form-control *ngFor="let lang of languages" [formGroupName]="control">
+        <label for="{{control}}-{{lang}}" class="control-label" [class.required]="required">{{label || control}} ({{lang}})</label>
+        <input id="{{control}}-{{lang}}" *ngIf="kind === 'input'" type="text" nbInput [fullWidth]="true" formControlName="{{lang}}">
+        <textarea id="{{control}}-{{lang}}" *ngIf="kind === 'textarea'" rows="5" type="text" nbInput [fullWidth]="true" formControlName="{{lang}}"></textarea>
+        <div class="text-danger mt-1" *ngIf="!!form.get(control+'.'+lang)?.errors?.maxlength" translate>* Character limit exceeded</div>
+    </admin-form-control>
+</ng-container>

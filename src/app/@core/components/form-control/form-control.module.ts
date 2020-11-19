@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormControlComponent } from './form-control.component';
-
+import {NgModule} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {FormControlComponent} from "./form-control.component";
 
 
 @NgModule({
@@ -13,4 +12,5 @@ import { FormControlComponent } from './form-control.component';
         CommonModule
     ]
 })
-export class FormControlModule { }
+export class FormControlModule {
+}

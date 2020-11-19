@@ -6,6 +6,7 @@ import {catchError} from "rxjs/operators";
 import {ToasterService} from "../services/general/toaster.service";
 import {environment} from "../../../environments/environment";
 import {NbTokenLocalStorage} from "@nebular/auth";
+import {Translate} from "../services/general/translate.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -25,15 +26,15 @@ export class AuthInterceptor implements HttpInterceptor {
         const url = req.url;
 
         const _token: string = this.tokenService.get().getValue();
-        const language: string = this.ls.retrieve("language");
+        const language: string = this.ls.retrieve("language") || "el";
 
         if (_token) {
             req = this._addHeader(req, "Authorization", `Bearer ${_token}`);
         }
-
         if (language) {
-            req = this._addHeader(req, "Content-Language", language);
+            req = this._addHeader(req, "Accept-Language", language);
         }
+
         if (url.indexOf("oauth") >= 0 || url.indexOf("translations") >= 0 || url.startsWith("http")) {
             Req = req.clone({
                 url
@@ -48,7 +49,7 @@ export class AuthInterceptor implements HttpInterceptor {
             catchError((err) => {
                 const error = err.statusText || (err.error && err.error.message) || err;
                 if (err) {
-                    this._toasterService.error("Error", error);
+                    this._toasterService.error(Translate.this("Error"), error);
                     return throwError(error);
                 }
             })

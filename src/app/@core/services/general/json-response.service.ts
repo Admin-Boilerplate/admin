@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { OperatorFunction } from "rxjs";
 import { map } from "rxjs/operators";
 import {IError, IJsonResponse} from "../../interfaces/_helpers/JsonResponse";
+import {marker} from "@biesbjerg/ngx-translate-extract-marker";
+import {Translate} from "./translate.service";
 
 @Injectable({
     providedIn: "root",
@@ -19,7 +21,7 @@ export class JsonResponse<T = any> implements IJsonResponse {
     }
 
     public static get responseError(): IError {
-        return { name: "ResponseError", message: "Your request resulted in an error." };
+        return { name: "ResponseError", message: Translate.this(marker("Your request resulted in an error.")) };
     }
 
     constructor() {}

@@ -5,6 +5,8 @@ import {Subject} from "rxjs";
 import {map, takeUntil} from "rxjs/operators";
 import {ActivatedRoute, Router} from "@angular/router";
 import {TableColumn} from "@swimlane/ngx-datatable";
+import {Translate} from "../../services/general/translate.service";
+import {marker} from "@biesbjerg/ngx-translate-extract-marker";
 
 @Component({
     selector: "admin-index-table",
@@ -31,15 +33,13 @@ export class IndexTableComponent implements OnInit, OnDestroy {
     public contextMenu = [
         {
             data: "mass-delete",
-            title: "Μαζική διαγραφή επιλεγμένων"
+            title: Translate.this(marker("Bulk delete of selected"))
         }
     ];
 
     private _unsub$ = new Subject();
 
-    constructor(private menuService: NbMenuService,
-                private activatedRoute: ActivatedRoute,
-                private router: Router) {
+    constructor(private menuService: NbMenuService) {
     }
 
     ngOnInit(): void {
@@ -61,7 +61,7 @@ export class IndexTableComponent implements OnInit, OnDestroy {
         const finalColumns: TableColumn[] = columns;
 
         finalColumns.unshift({
-            name: "A/A",
+            name: "",
             $$id: "asd",
             maxWidth: 45,
             checkboxable: true,
@@ -69,7 +69,7 @@ export class IndexTableComponent implements OnInit, OnDestroy {
         });
         finalColumns.push(
             {
-                name: "Actions",
+                name: Translate.this(marker("Actions")),
                 cellTemplate: this.actionsTemplate,
                 prop: "_id",
                 sortable: false

@@ -4,6 +4,8 @@ import {NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeServi
 import {map, takeUntil} from "rxjs/operators";
 import {Observable, Subject} from "rxjs";
 import {LayoutService} from "../../../@core/services/general/layout.service";
+import {marker} from "@biesbjerg/ngx-translate-extract-marker";
+import {Translate} from "../../../@core/services/general/translate.service";
 
 @Component({
     selector: "ngx-header",
@@ -46,7 +48,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     currentTheme = "default";
 
-    userMenu = [{title: "Profile"}, {title: "Log out"}];
+    userMenu = [{title: Translate.this(marker("Profile"))}, {title: Translate.this(marker("Log out"))}];
 
     public constructor(
         private sidebarService: NbSidebarService,

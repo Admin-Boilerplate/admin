@@ -1,5 +1,8 @@
 import { Injectable } from "@angular/core";
 import Swal, { SweetAlertOptions, SweetAlertResult, SweetAlertIcon } from "sweetalert2";
+import {Helpers} from "./helpers.service";
+import {Translate} from "./translate.service";
+import {marker} from "@biesbjerg/ngx-translate-extract-marker";
 
 export class SwalBase {
 
@@ -9,19 +12,19 @@ export class SwalBase {
                 private overrideNoun?: boolean) {
     }
 
-    public generic(options: SweetAlertOptions = {}, noun: string = "Η ενέγεια") {
+    public generic(options: SweetAlertOptions = {}, noun: string = Translate.this(marker("Action"))) {
         return this.base(options, noun);
     }
 
-    public create(options: SweetAlertOptions = {}, noun: string = "Η δημιουργία") {
+    public create(options: SweetAlertOptions = {}, noun: string = Translate.this(marker("Creation"))) {
         return this.base(options, noun);
     }
 
-    public edit(options: SweetAlertOptions = {}, noun: string = "Η ενημέρωση") {
+    public edit(options: SweetAlertOptions = {}, noun: string = Translate.this(marker("Update"))) {
         return this.base(options, noun);
     }
 
-    public delete(options: SweetAlertOptions = {}, noun: string = "Η διαγραφή") {
+    public delete(options: SweetAlertOptions = {}, noun: string = Translate.this(marker("Deletion"))) {
         return this.base(options, noun);
     }
 
@@ -50,16 +53,16 @@ export class SwalService {
      */
     public static success: SwalBase = new SwalBase(
         "success",
-        "Επιτυχία!",
-        "έγινε με επιτυχία!"
+        Translate.this(marker("Success")) + "!",
+        Translate.this(marker("successfully")) + "!"
     );
     /**
      * @description type = error, title = Αποτυχία!, text = απέτυχε!
      */
     public static error: SwalBase = new SwalBase(
         "error",
-        "Αποτυχία",
-        "απέτυχε..."
+        Translate.this(marker("Failure")),
+        Translate.this(marker("failed..."))
     );
 
     /**
@@ -67,8 +70,8 @@ export class SwalService {
      */
     public static warning: SwalBase = new SwalBase(
         "warning",
-        "Προσοχή",
-        "Παρακαλώ ελέγξτε τα στοιχεία!",
+        Translate.this(marker("Warning")),
+        Translate.this(marker("Please check your data!")),
         true
     );
     /**
@@ -76,15 +79,15 @@ export class SwalService {
      */
     public static question: SwalBase = new SwalBase(
         "question",
-        "Είσαι σίγουρος/η;",
+        Translate.this(marker("Are you sure?")),
         "",
         true
     );
     public static yesNoBasicOptions: SweetAlertOptions = {
         showConfirmButton: true,
         showCancelButton: true,
-        confirmButtonText: "Ναι",
-        cancelButtonText: "Όχι",
+        confirmButtonText: Translate.this(marker("Yes")),
+        cancelButtonText: Translate.this(marker("No")),
         reverseButtons: true,
         focusCancel: true,
         cancelButtonColor: "light",

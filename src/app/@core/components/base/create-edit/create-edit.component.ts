@@ -1,13 +1,16 @@
 import {AbstractType, Component, InjectionToken, Type} from "@angular/core";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {IHttpService} from "../../../interfaces/_base/HttpService";
+import {IHttpService, RetrieveOptions} from "../../../interfaces/_base/HttpService";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ToasterService} from "../../../services/general/toaster.service";
-import {HelpersService} from "../../../services/general/helpers.service";
+import {Helpers} from "../../../services/general/helpers.service";
 import {finalize} from "rxjs/operators";
 import {IJsonResponse} from "../../../interfaces/_helpers/JsonResponse";
 import {Loading} from "../../../services/general/loading.service";
 import {IModel} from "../../../interfaces/_base/Model";
+import {IRetrieveOptions} from "../../../interfaces/_base/Retrieve";
+import {marker} from "@biesbjerg/ngx-translate-extract-marker";
+import {Translate} from "../../../services/general/translate.service";
 
 @Component({
     selector: "admin-create-edit",
@@ -23,10 +26,13 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
     public edit: boolean = false;
     public verb: string;
 
+    public options: IRetrieveOptions;
+
     // Injected
     public service: IHttpService<T>;
     public activatedRoute: ActivatedRoute;
     public multilingualFields: string[];
+    public patchMultilingual: boolean;
     public router: Router;
     public fb: FormBuilder;
     public toaster: ToasterService;
@@ -37,11 +43,11 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
 
     start(): void {
         this.id = this.activatedRoute.snapshot.paramMap.get("id");
-        this.verb = !this.id ? "Create" : "Update";
+        this.verb = !this.id ? marker("Create") : marker("Update");
 
         if (this.id) {
-            this.get();
             this.edit = true;
+            this.get();
         }
     }
 
@@ -50,11 +56,13 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
         route: ActivatedRoute;
         resource: string
         multilingualFields?: string[],
+        patchMultilingual?: boolean
     }) {
-        this.service = HelpersService.injector.get(data.service);
+        this.service = Helpers.injector.get(data.service);
         this.activatedRoute = data.route;
         this.multilingualFields = data.multilingualFields;
         this.resource = data.resource;
+        this.patchMultilingual = data.patchMultilingual === undefined ? true : data.patchMultilingual;
 
         this.start();
     }
@@ -62,15 +70,22 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
     public get() {
         this.beforeRequest();
         this.service
-            .get(this.id)
+            .get(this.id, this.getOptions())
             .pipe(finalize(this.afterRequest.bind(this)))
             .subscribe(this.afterGet.bind(this));
+    }
+
+    public getOptions(): RetrieveOptions<T> {
+        return {
+            lean: true,
+            ...this.options
+        };
     }
 
     public afterGet(response: IJsonResponse<T>) {
         if (response.success) {
             this.model = response.get();
-            this.form.patchValue(this.patchValue(this.model, false), {onlySelf: true});
+            this.form.patchValue(this.patchValue(this.model), {onlySelf: true});
         }
     }
 
@@ -97,9 +112,9 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
 
     public afterCreate(response: IJsonResponse<T>) {
         if (response.success) {
-            this.toaster.success("Success", "Successfully created");
+            this.toaster.success(Translate.this(marker("Success")), Translate.this(marker("Successfully created")));
         } else {
-            this.toaster.error("Error", response.reason());
+            this.toaster.error(marker("Error"), response.reason());
         }
     }
 
@@ -114,9 +129,9 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
 
     public afterUpdate(response: IJsonResponse<T>) {
         if (response.success) {
-            this.toaster.success("Success", "Successfully updated");
+            this.toaster.success(Translate.this("Success"), Translate.this(marker("Successfully updated")));
         } else {
-            this.toaster.error("Error", response.reason());
+            this.toaster.error(Translate.this("Error"), response.reason());
         }
     }
 
@@ -126,10 +141,9 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
 
             const existingControl = form.get(control);
 
-            HelpersService.languages.forEach(lang => {
+            Helpers.languages.forEach(lang => {
                 multilingualGroup.addControl(lang, this.fb.control("", existingControl?.validator || []));
             });
-
             if (form.contains(control)) {
                 form.removeControl(control);
             }
@@ -150,12 +164,12 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
         this.loading = false;
     }
 
-    public patchValue(model: any, withMultilingual: boolean = true) {
+    public patchValue(model: any) {
         const values = {};
         for (const attr in model) {
             if (this.form.get(attr) !== undefined) {
-                if (!withMultilingual && HelpersService.isMultilang(model[attr])) {
-                    values[attr] = HelpersService.multilang(model[attr]);
+                if (!this.patchMultilingual && Helpers.isMultilang(model[attr])) {
+                    values[attr] = Helpers.multilang(model[attr]);
                 } else {
                     values[attr] = model[attr];
                 }
@@ -166,9 +180,9 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
     }
 
     private _injectDependencies() {
-        this.activatedRoute = HelpersService.injector.get(ActivatedRoute);
-        this.router = HelpersService.injector.get(Router);
-        this.fb = HelpersService.injector.get(FormBuilder);
-        this.toaster = HelpersService.injector.get(ToasterService);
+        this.activatedRoute = Helpers.injector.get(ActivatedRoute);
+        this.router = Helpers.injector.get(Router);
+        this.fb = Helpers.injector.get(FormBuilder);
+        this.toaster = Helpers.injector.get(ToasterService);
     }
 }

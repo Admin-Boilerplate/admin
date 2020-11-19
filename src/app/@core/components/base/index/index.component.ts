@@ -4,7 +4,7 @@ import {IHttpService} from "../../../interfaces/_base/HttpService";
 import {Router} from "@angular/router";
 import {ToasterService} from "../../../services/general/toaster.service";
 import {remove} from "lodash";
-import {HelpersService} from "../../../services/general/helpers.service";
+import {Helpers} from "../../../services/general/helpers.service";
 import {finalize} from "rxjs/operators";
 import {IJsonResponse} from "../../../interfaces/_helpers/JsonResponse";
 import {SwalService} from "../../../services/general/swal.service";
@@ -41,7 +41,7 @@ export class IndexComponent<T extends IModel = {} & IModel> {
     }
 
     public setUp(service: Type<IHttpService<T>> | InjectionToken<IHttpService<T>> | AbstractType<IHttpService<T>>) {
-        this.service = HelpersService.injector.get(service);
+        this.service = Helpers.injector.get(service);
 
         this.page.number = 1;
         this.page.size = 25;
@@ -145,7 +145,7 @@ export class IndexComponent<T extends IModel = {} & IModel> {
     }
 
     private _injectDependencies() {
-        this.router = HelpersService.injector.get(Router);
-        this.toaster = HelpersService.injector.get(ToasterService);
+        this.router = Helpers.injector.get(Router);
+        this.toaster = Helpers.injector.get(ToasterService);
     }
 }

@@ -2,6 +2,7 @@
 import { Observable, OperatorFunction } from "rxjs";
 import {IJsonResponse} from "../_helpers/JsonResponse";
 import {IPaginate} from "./Paginate";
+import {IRetrieveOptions} from "./Retrieve";
 
 export interface IHttpService<T> {
     baseUrl: string;
@@ -10,13 +11,13 @@ export interface IHttpService<T> {
     limit: number;
     page: number;
 
-    get(id: string): Observable<IJsonResponse<T>>;
+    get(id: string, options?: RetrieveOptions<T>): Observable<IJsonResponse<T>>;
 
     create(data: Partial<T>): Observable<IJsonResponse<T>>;
 
-    all(options?: any): Observable<IJsonResponse<T[]>>;
+    all(options?: RetrieveOptions<T>): Observable<IJsonResponse<T[]>>;
 
-    paginate(limit: number, page: number): Observable<IJsonResponse<IPaginate<T>>>;
+    paginate(limit: number, page: number, options?: RetrieveOptions<T>): Observable<IJsonResponse<IPaginate<T>>>;
 
     update(id: string, data: Partial<T>): Observable<IJsonResponse<T>>;
 
@@ -24,9 +25,11 @@ export interface IHttpService<T> {
 
     deleteMany(ids: string[]): Observable<{ success: boolean }>;
 
-    count(id: string): Observable<IJsonResponse<number>>;
+    count(options?: RetrieveOptions<T>): Observable<IJsonResponse<number>>;
 
-    search(options?: any): Observable<IJsonResponse<T>>;
+    search(options?: RetrieveOptions<T>): Observable<IJsonResponse<T>>;
 
     check(): OperatorFunction<IJsonResponse<any>, IJsonResponse<any>>;
 }
+
+export type RetrieveOptions<T> = Partial<T> | Partial<IRetrieveOptions> | {[key: string]: any};

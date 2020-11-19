@@ -2,6 +2,8 @@ import {AfterViewInit, Component, OnInit} from "@angular/core";
 import {IndexComponent} from "../../../@core/components/base/index/index.component";
 import {UsersService} from "../../../@core/services/http/users.service";
 import {IUser} from "../../../@core/interfaces/models/User";
+import {marker} from "@biesbjerg/ngx-translate-extract-marker";
+import {Translate} from "../../../@core/services/general/translate.service";
 
 @Component({
     selector: "admin-users-index",
@@ -20,11 +22,11 @@ export class UsersIndexComponent extends IndexComponent<IUser> implements OnInit
     ngAfterViewInit(): void {
         this.table.columns = [
             {
-                name: "Email",
+                name: Translate.this(marker("Email")),
                 prop: "email"
             },
             {
-                name: "Roles",
+                name: Translate.this(marker("Roles")),
                 prop: "roles"
             }
         ];

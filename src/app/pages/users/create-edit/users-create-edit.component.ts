@@ -20,7 +20,8 @@ export class UsersCreateEditComponent extends CreateEditComponent<IUser> impleme
         this.setUp({
             service: UsersService,
             route,
-            resource: "user"
+            resource: "user",
+            multilingualFields: ["name"]
         });
 
         this.initializeForm(

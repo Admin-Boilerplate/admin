@@ -40,7 +40,7 @@
 };
 
 label.required {
-    &:after {
+    &::after {
         content: "*";
         color: red;
         margin-left: .5rem;

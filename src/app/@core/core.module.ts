@@ -1,8 +1,7 @@
 import {ModuleWithProviders, NgModule, Optional, SkipSelf} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {NbAuthJWTToken, NbAuthModule, NbPasswordAuthStrategy, NbTokenLocalStorage, NbTokenStorage} from "@nebular/auth";
+import {NbAuthJWTToken, NbAuthModule, NbPasswordAuthStrategy, NbTokenLocalStorage} from "@nebular/auth";
 import {NbRoleProvider, NbSecurityModule} from "@nebular/security";
-import {of as observableOf} from "rxjs";
 
 import {throwIfAlreadyLoaded} from "./module-import-guard";
 import {HTTP_INTERCEPTORS} from "@angular/common/http";

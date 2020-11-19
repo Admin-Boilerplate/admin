@@ -10,6 +10,8 @@ import {CreateEditCardModule} from "../../@core/components/create-edit-card/crea
 import {IndexTableModule} from "../../@core/components/index-table/index-table.module";
 import {FormControlModule} from "../../@core/components/form-control/form-control.module";
 import {ReactiveFormsModule} from "@angular/forms";
+import {MultilingualControlModule} from "../../@core/components/multilingual-control/multilingual-control.module";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -26,7 +28,9 @@ import {ReactiveFormsModule} from "@angular/forms";
         FormControlModule,
         NbInputModule,
         ReactiveFormsModule,
-        NbSelectModule
+        NbSelectModule,
+        MultilingualControlModule,
+        TranslateModule
     ]
 })
 export class UsersModule {

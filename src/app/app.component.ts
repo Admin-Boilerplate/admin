@@ -4,7 +4,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 import {Component, Injector, OnInit} from "@angular/core";
-import {HelpersService} from "./@core/services/general/helpers.service";
+import {Helpers} from "./@core/services/general/helpers.service";
 import {LocalStorageService} from "ngx-webstorage";
 import {Title} from "@angular/platform-browser";
 import {NavigationEnd, Router} from "@angular/router";
@@ -12,6 +12,8 @@ import {filter} from "rxjs/operators";
 import {NgxSpinnerService} from "ngx-spinner";
 import {Loading} from "./@core/services/general/loading.service";
 import {NbIconLibraries} from "@nebular/theme";
+import {TranslateService} from "@ngx-translate/core";
+import {Translate} from "./@core/services/general/translate.service";
 
 @Component({
     selector: "ngx-app",
@@ -23,6 +25,7 @@ export class AppComponent implements OnInit {
         private router: Router,
         private injector: Injector,
         private title: Title,
+        private translateService: TranslateService,
         private spinner: NgxSpinnerService,
         private ls: LocalStorageService
         ) {
@@ -46,12 +49,13 @@ export class AppComponent implements OnInit {
             }
         });
 
-        this._setHelpers();
+        this._setStatics();
     }
 
 
-    private _setHelpers() {
-        HelpersService.injector = this.injector;
-        HelpersService.lang = this.ls.retrieve("language") ? this.ls.retrieve("language") : "el";
+    private _setStatics() {
+        Helpers.injector = this.injector;
+        Helpers.lang = this.ls.retrieve("language") ? this.ls.retrieve("language") : "el";
+        Translate.service = this.translateService;
     }
 }

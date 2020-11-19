@@ -1,10 +1,18 @@
 <admin-create-edit-card [ce]="this" [formGroup]="form">
+    <admin-multilingual-control
+        col="8"
+        [form]="form"
+        [required]="true"
+        [label]="'Name' | translate"
+        [control]="'name'"
+    >
+    </admin-multilingual-control>
     <admin-form-control col="6">
-        <label for="email" class="required">Email</label>
+        <label for="email" class="required" translate>Email</label>
         <input type="email" id="email" formControlName="email" nbInput [fullWidth]="true">
     </admin-form-control>
     <admin-form-control col="6">
-        <label for="role" class="required">Ρόλος</label>
+        <label for="role" class="required" translate>Roles</label>
         <nb-select multiple id="role" [fullWidth]="true" formControlName="roles">
             <nb-option *ngFor="let role of roles" value="{{role.id}}">{{role.name}}</nb-option>
         </nb-select>

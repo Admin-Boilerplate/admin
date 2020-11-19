@@ -4,6 +4,7 @@ import {CreateEditCardComponent} from "./create-edit-card.component";
 import {NbButtonModule, NbCardModule, NbIconModule} from "@nebular/theme";
 import {RouterModule} from "@angular/router";
 import {NbSecurityModule} from "@nebular/security";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {NbSecurityModule} from "@nebular/security";
         NbButtonModule,
         NbIconModule,
         RouterModule,
-        NbSecurityModule
+        NbSecurityModule,
+        TranslateModule
     ]
 })
 export class CreateEditCardModule {

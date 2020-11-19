@@ -1,6 +1,6 @@
 <nb-card status="{{ce.edit ? 'primary' : 'success'}}">
     <nb-card-header>
-        {{ce.edit ? 'Επεξεργασία' : 'Δημιουργία'}}
+        {{ce.verb | translate}}
     </nb-card-header>
     <nb-card-body>
         <div class="row">
@@ -11,26 +11,29 @@
         <div class="row">
             <div class="col-12 text-right">
                 <a nbButton
+                   translate
                    [routerLink]="[ce.edit ? '../../' : '../']"
                    status="basic"
                    class="mr-2">
-                    ΠΙΣΩ ΣΤΗ ΛΙΣΤΑ
+                    Back to list
                 </a>
                 <button nbButton
+                        translate
                         (click)="ce.update()"
                         [disabled]="ce.form.invalid"
                         status="primary"
                         *ngIf="ce.edit">
                     <nb-icon icon="checkmark"></nb-icon>
-                    ΕΝΗΜΕΡΩΣΗ
+                    Update
                 </button>
                 <button nbButton
+                        translate
                         (click)="ce.create()"
                         [disabled]="ce.form.invalid"
                         status="success"
                         *ngIf="!ce.edit">
                     <nb-icon icon="save"></nb-icon>
-                        ΑΠΟΘΗΚΕΥΣΗ
+                        Save
                 </button>
             </div>
         </div>
