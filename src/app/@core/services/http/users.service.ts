@@ -6,5 +6,5 @@ import {IUser} from "../../interfaces/models/User";
     providedIn: "root",
 })
 export class UsersService extends HttpService<IUser> {
-    public baseUrl: string = "/users";
+    public baseUrl = "/users";
 }

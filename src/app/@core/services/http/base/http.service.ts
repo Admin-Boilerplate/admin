@@ -1,24 +1,33 @@
 import { Injectable } from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
 import {ToasterService} from "../../general/toaster.service";
 import {IJsonResponse} from "../../../interfaces/_helpers/JsonResponse";
-import {JsonResponse} from "../../general/json-response.service";
 import {IPaginate} from "../../../interfaces/_base/Paginate";
 import {IHttpService, RetrieveOptions} from "../../../interfaces/_base/HttpService";
 import {marker} from "@biesbjerg/ngx-translate-extract-marker";
 import {Translate} from "../../general/translate.service";
+import {JsonResponse} from "../../general/response.service";
 
 @Injectable({
     providedIn: "root",
 })
 export class HttpService<T = any> implements IHttpService<T> {
-    public baseUrl: string = "";
+    public set baseUrl(url: string) {
+        this._baseUrl = url;
+        this.setSelect();
+    }
+    public get baseUrl() {
+        return this._baseUrl;
+    }
+    private _baseUrl: string;
     public limit: number = 25;
     public page: number = 0;
+    public select$: Observable<T[]>;
 
-    constructor(public http: HttpClient, public toaster: ToasterService) {}
+    constructor(public http: HttpClient, public toaster: ToasterService) {
+    }
 
     public all(options: RetrieveOptions<T> = {}): Observable<IJsonResponse<T[]>> {
         return this.http.get(`${this.baseUrl}`, { params: options as HttpParams })
@@ -93,6 +102,12 @@ export class HttpService<T = any> implements IHttpService<T> {
             );
     }
 
+    public select(options: RetrieveOptions<T> = {}): Observable<T[]> {
+        return this.all(options).pipe(
+            JsonResponse.select<T>()
+        );
+    }
+
     public check() {
         return map((response: IJsonResponse) => {
             if (!response.success) {
@@ -100,5 +115,9 @@ export class HttpService<T = any> implements IHttpService<T> {
             }
             return response;
         });
+    }
+
+    public setSelect() {
+        this.select$ = this.select();
     }
 }

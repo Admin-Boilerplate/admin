@@ -11,6 +11,8 @@ import {IModel} from "../../../interfaces/_base/Model";
 import {IRetrieveOptions} from "../../../interfaces/_base/Retrieve";
 import {marker} from "@biesbjerg/ngx-translate-extract-marker";
 import {Translate} from "../../../services/general/translate.service";
+import {DisplayNameFn} from "../../../interfaces/_helpers/DisplayName";
+import {get} from "lodash";
 
 @Component({
     selector: "admin-create-edit",
@@ -27,6 +29,7 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
     public verb: string;
 
     public options: IRetrieveOptions;
+    public breadcrumbProperty: string | DisplayNameFn;
 
     // Injected
     public service: IHttpService<T>;
@@ -43,7 +46,7 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
 
     start(): void {
         this.id = this.activatedRoute.snapshot.paramMap.get("id");
-        this.verb = !this.id ? marker("Create") : marker("Update");
+        this.verb = !this.id ? marker("Create") : marker("Edit");
 
         if (this.id) {
             this.edit = true;
@@ -56,13 +59,15 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
         route: ActivatedRoute;
         resource: string
         multilingualFields?: string[],
-        patchMultilingual?: boolean
+        patchMultilingual?: boolean,
+        breadcrumbProperty?: string | DisplayNameFn;
     }) {
         this.service = Helpers.injector.get(data.service);
         this.activatedRoute = data.route;
         this.multilingualFields = data.multilingualFields;
         this.resource = data.resource;
         this.patchMultilingual = data.patchMultilingual === undefined ? true : data.patchMultilingual;
+        this.breadcrumbProperty = data.breadcrumbProperty;
 
         this.start();
     }
@@ -86,6 +91,8 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
         if (response.success) {
             this.model = response.get();
             this.form.patchValue(this.patchValue(this.model), {onlySelf: true});
+
+            this.setBreadcrumb();
         }
     }
 
@@ -177,6 +184,22 @@ export class CreateEditComponent<T extends IModel = {} & IModel> {
         }
 
         return values;
+    }
+
+    public setBreadcrumb() {
+        if (this.breadcrumbProperty) {
+            let name;
+
+            if (typeof this.breadcrumbProperty === "string") {
+                name = get(this.model, this.breadcrumbProperty);
+            } else if (typeof this.breadcrumbProperty === "function") {
+                name = this.breadcrumbProperty(this.model);
+            }
+
+            if (name) {
+                Helpers.breadcrumbs.changeBreadcrumb(this.activatedRoute.snapshot, name);
+            }
+        }
     }
 
     private _injectDependencies() {

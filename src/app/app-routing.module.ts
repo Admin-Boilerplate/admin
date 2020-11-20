@@ -8,12 +8,15 @@ import {
     NbRequestPasswordComponent,
     NbResetPasswordComponent
 } from "@nebular/auth";
+import {AuthGuard} from "./@core/guards/auth.guard";
+import {marker} from "@biesbjerg/ngx-translate-extract-marker";
 
 export const routes: Routes = [
     {
         path: "pages",
         loadChildren: () => import("./pages/pages.module")
             .then(m => m.PagesModule),
+        canActivate: []
     },
     {
         path: "auth",
@@ -54,7 +57,9 @@ const config: ExtraOptions = {
 };
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, config)],
+    imports: [
+        RouterModule.forRoot(routes, config)
+    ],
     exports: [RouterModule],
 })
 export class AppRoutingModule {

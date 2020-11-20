@@ -14,6 +14,7 @@ import {AccessControlService} from "../../../@core/services/general/access-contr
 export class UsersCreateEditComponent extends CreateEditComponent<IUser> implements OnInit {
 
     public roles = AccessControlService.permissions;
+    public users$;
 
     constructor(private route: ActivatedRoute) {
         super();
@@ -21,7 +22,8 @@ export class UsersCreateEditComponent extends CreateEditComponent<IUser> impleme
             service: UsersService,
             route,
             resource: "user",
-            multilingualFields: ["name"]
+            multilingualFields: ["name"],
+            breadcrumbProperty: "email"
         });
 
         this.initializeForm(
@@ -30,6 +32,7 @@ export class UsersCreateEditComponent extends CreateEditComponent<IUser> impleme
                 roles: [null]
             })
         );
+
     }
 
     ngOnInit(): void {

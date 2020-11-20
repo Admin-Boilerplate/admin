@@ -6,6 +6,8 @@ import {Observable, Subject} from "rxjs";
 import {LayoutService} from "../../../@core/services/general/layout.service";
 import {marker} from "@biesbjerg/ngx-translate-extract-marker";
 import {Translate} from "../../../@core/services/general/translate.service";
+import {NbAuthService} from "@nebular/auth";
+import {Router} from "@angular/router";
 
 @Component({
     selector: "ngx-header",
@@ -48,14 +50,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     currentTheme = "default";
 
-    userMenu = [{title: Translate.this(marker("Profile"))}, {title: Translate.this(marker("Log out"))}];
+    userMenu = [
+        {title: Translate.this(marker("Profile")), data: "profile"},
+        {title: Translate.this(marker("Log out")), data: "logout"}
+    ];
 
     public constructor(
         private sidebarService: NbSidebarService,
         private menuService: NbMenuService,
         private themeService: NbThemeService,
+        private auth: NbAuthService,
         private layoutService: LayoutService,
         private breakpointService: NbMediaBreakpointsService,
+        private router: Router
     ) {
         this.materialTheme$ = this.themeService.onThemeChange()
             .pipe(map(theme => {
@@ -74,6 +81,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 takeUntil(this.destroy$),
             )
             .subscribe((isLessThanXl: boolean) => this.userPictureOnly = isLessThanXl);
+
+        this.menuService.onItemClick()
+            .pipe(
+                takeUntil(this.destroy$),
+                map(({item: { data }}) => data)
+            )
+            .subscribe(data => {
+                switch (data) {
+                    case "profile":
+                        break;
+                    case "logout":
+                        this.auth.logout("email").subscribe(res => {
+                            if (res.isSuccess()) {
+                                this.router.navigate(["/auth/login"]);
+                            }
+                        });
+                        break;
+                }
+            });
     }
 
     ngOnDestroy() {

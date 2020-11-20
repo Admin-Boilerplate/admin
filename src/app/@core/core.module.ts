@@ -51,6 +51,13 @@ export const NB_CORE_PROVIDERS = [
                         failure: null
                     },
                     endpoint: "/auth/login"
+                },
+                logout: {
+                    redirect: {
+                        success: "/auth/login",
+                        failure: null
+                    },
+                    endpoint: "/auth/logout"
                 }
             })
         ],

@@ -17,4 +17,10 @@
             <nb-option *ngFor="let role of roles" value="{{role.id}}">{{role.name}}</nb-option>
         </nb-select>
     </admin-form-control>
+    <admin-form-control col="6">
+        <label for="role" class="required" translate>Users</label>
+        <nb-select id="users" [fullWidth]="true">
+            <nb-option *ngFor="let role of (service.select$ | async)" value="{{role._id}}">{{role.email}}</nb-option>
+        </nb-select>
+    </admin-form-control>
 </admin-create-edit-card>

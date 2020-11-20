@@ -7,3 +7,14 @@
     padding-top: nb-theme(layout-padding-top);
   }
 }
+.breadcrumbs {
+    padding: 0;
+    li.breadcrumb-item {
+        display: inline-block;
+
+        a {
+            color: nb-theme(text-basic-color)!important;
+            font-weight: 600;
+        }
+    }
+}

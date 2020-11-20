@@ -20,6 +20,16 @@ export class JsonResponse<T = any> implements IJsonResponse {
         });
     }
 
+    public static select<T = any>(): OperatorFunction<any, any> {
+        return map((res: JsonResponse<T>) => {
+            if (res.success) {
+                return res.get();
+            }
+
+            return [];
+        });
+    }
+
     public static get responseError(): IError {
         return { name: "ResponseError", message: Translate.this(marker("Your request resulted in an error.")) };
     }

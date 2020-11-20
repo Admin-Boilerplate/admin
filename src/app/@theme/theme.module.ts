@@ -43,6 +43,8 @@ import { DARK_THEME } from './styles/theme.dark';
 import { MATERIAL_LIGHT_THEME } from './styles/material/theme.material-light';
 import { MATERIAL_DARK_THEME } from './styles/material/theme.material-dark';
 import {TranslateModule} from "@ngx-translate/core";
+import {BreadcrumbModule} from "angular-crumbs";
+import {RouterModule} from "@angular/router";
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -77,7 +79,7 @@ const PIPES = [
 ];
 
 @NgModule({
-    imports: [CommonModule, MatRippleModule, ...NB_MODULES, TranslateModule],
+    imports: [CommonModule, MatRippleModule, ...NB_MODULES, TranslateModule, BreadcrumbModule, RouterModule],
   exports: [CommonModule, MatRippleModule, ...PIPES, ...COMPONENTS],
   declarations: [...COMPONENTS, ...PIPES],
 })

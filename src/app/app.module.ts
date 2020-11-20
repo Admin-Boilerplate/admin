@@ -17,6 +17,7 @@ import {NgxSpinnerModule} from "ngx-spinner";
 import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {environment} from "../environments/environment";
+import {BreadcrumbModule} from "angular-crumbs";
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -30,7 +31,6 @@ export function createTranslateLoader(http: HttpClient) {
         BrowserAnimationsModule,
         HttpClientModule,
         AppRoutingModule,
-
         ThemeModule.forRoot(),
         NbSidebarModule.forRoot(),
         NbMenuModule.forRoot(),
@@ -52,9 +52,11 @@ export function createTranslateLoader(http: HttpClient) {
                 provide: TranslateLoader,
                 useFactory: createTranslateLoader,
                 deps: [HttpClient]
-            }
+            },
+            useDefaultLang: true
         }),
         NgxSpinnerModule,
+        BreadcrumbModule,
         CoreModule.forRoot(),
     ],
     bootstrap: [AppComponent],

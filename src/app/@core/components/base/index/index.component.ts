@@ -7,7 +7,7 @@ import {remove} from "lodash";
 import {Helpers} from "../../../services/general/helpers.service";
 import {finalize} from "rxjs/operators";
 import {IJsonResponse} from "../../../interfaces/_helpers/JsonResponse";
-import {SwalService} from "../../../services/general/swal.service";
+import {Alert} from "../../../services/general/alert.service";
 import {Loading} from "../../../services/general/loading.service";
 import {IndexTableComponent} from "../../index-table/index-table.component";
 import {IModel} from "../../../interfaces/_base/Model";
@@ -76,7 +76,7 @@ export class IndexComponent<T extends IModel = {} & IModel> {
     }
 
     public delete(id: string) {
-        SwalService.question.delete(SwalService.yesNoBasicOptions).then((answer) => {
+        Alert.question.delete(Alert.yesNoBasicOptions).then((answer) => {
             if (answer.dismiss) {
                 this.onDeleteRejected(id);
                 return;
@@ -94,7 +94,7 @@ export class IndexComponent<T extends IModel = {} & IModel> {
         if (response.success) {
             remove(this.models, (model: any) => model._id === id);
             this.models = [...this.models];
-            SwalService.success.delete();
+            Alert.success.delete();
         }
     }
 
@@ -103,7 +103,7 @@ export class IndexComponent<T extends IModel = {} & IModel> {
     }
 
     public deleteMany(ids: string[]) {
-        SwalService.question.delete(SwalService.yesNoBasicOptions).then((answer) => {
+        Alert.question.delete(Alert.yesNoBasicOptions).then((answer) => {
             if (answer.dismiss) {
                 this.onMassDeleteRejected(ids);
                 return;
@@ -121,7 +121,7 @@ export class IndexComponent<T extends IModel = {} & IModel> {
         if (response.success) {
             remove(this.models, (model: any) => ids.includes(model._id));
             this.models = [...this.models];
-            SwalService.success.delete();
+            Alert.success.delete();
         }
     }
 

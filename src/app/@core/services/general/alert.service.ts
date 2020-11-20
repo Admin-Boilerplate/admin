@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
 import Swal, { SweetAlertOptions, SweetAlertResult, SweetAlertIcon } from "sweetalert2";
-import {Helpers} from "./helpers.service";
 import {Translate} from "./translate.service";
 import {marker} from "@biesbjerg/ngx-translate-extract-marker";
 
-export class SwalBase {
+export class AlertBase {
 
     constructor(private type?: SweetAlertIcon,
                 private title?: string,
@@ -46,12 +45,12 @@ export class SwalBase {
 @Injectable({
     providedIn: "root"
 })
-export class SwalService {
+export class Alert {
 
     /**
      * @description type = success, title = Επιτυχία, text = έγινε με επιτυχία!
      */
-    public static success: SwalBase = new SwalBase(
+    public static success: AlertBase = new AlertBase(
         "success",
         Translate.this(marker("Success")) + "!",
         Translate.this(marker("successfully")) + "!"
@@ -59,7 +58,7 @@ export class SwalService {
     /**
      * @description type = error, title = Αποτυχία!, text = απέτυχε!
      */
-    public static error: SwalBase = new SwalBase(
+    public static error: AlertBase = new AlertBase(
         "error",
         Translate.this(marker("Failure")),
         Translate.this(marker("failed..."))
@@ -68,7 +67,7 @@ export class SwalService {
     /**
      * @description type = warning, title = Προσοχή!, text = Παρακαλώ ελέγξτε τα στοιχεία.!, overrideNoun = true
      */
-    public static warning: SwalBase = new SwalBase(
+    public static warning: AlertBase = new AlertBase(
         "warning",
         Translate.this(marker("Warning")),
         Translate.this(marker("Please check your data!")),
@@ -77,7 +76,7 @@ export class SwalService {
     /**
      * @description type = question, title = Είσαι σίγουρος/ή;, text = "", overrideNoun = true
      */
-    public static question: SwalBase = new SwalBase(
+    public static question: AlertBase = new AlertBase(
         "question",
         Translate.this(marker("Are you sure?")),
         "",

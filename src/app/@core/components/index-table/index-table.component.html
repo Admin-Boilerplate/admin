@@ -4,6 +4,7 @@
             <span translate>List</span>
             <div>
                 <a nbButton
+                   *ngIf="config.hasCreate"
                    translate
                    [routerLink]="['create']"
                    status="success"
@@ -11,7 +12,7 @@
                     <nb-icon icon="plus"></nb-icon>
                     Create
                 </a>
-                <nb-actions *ngIf="i?.selected?.length" class="d-inline-block ml-2">
+                <nb-actions *ngIf="i?.selected?.length && config.hasMassActions" class="d-inline-block ml-2">
                     <nb-action icon="more-horizontal"
                                nbContextMenuTag="index-actions"
                                [nbContextMenu]="contextMenu">
@@ -23,12 +24,13 @@
     <nb-card-body>
         <ngx-datatable *ngIf="i?.models?.length"
                        [rows]="i.models"
-                       [selectionType]="'checkbox'"
+                       [selectionType]="config.hasMassActions ? 'checkbox' : ''"
                        [selected]="i.selected"
                        [columns]="columns"
                        columnMode="force"
                        [rowHeight]="false"
                        footerHeight="auto"
+                       [externalSorting]="false"
                        [externalPaging]="false"
                        headerHeight="auto"
                        (select)="i.onSelect($event)"
@@ -39,6 +41,8 @@
 
 <ng-template #actionsTemplate let-row="row" let-value="value">
     <a nbButton
+       *ngIf="config.hasEdit"
+       [nbTooltip]="'Edit' | translate"
        size="small"
        class="mr-2"
        [routerLink]="['edit', value]"
@@ -47,6 +51,8 @@
         <nb-icon icon="edit"></nb-icon>
     </a>
     <a nbButton
+       *ngIf="config.hasDelete"
+       [nbTooltip]="'Delete' | translate"
        size="small"
        (click)="i.delete(value)"
        shape="round"

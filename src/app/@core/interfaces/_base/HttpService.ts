@@ -10,6 +10,7 @@ export interface IHttpService<T> {
     toaster: any;
     limit: number;
     page: number;
+    select$: Observable<T[]>;
 
     get(id: string, options?: RetrieveOptions<T>): Observable<IJsonResponse<T>>;
 
@@ -29,7 +30,11 @@ export interface IHttpService<T> {
 
     search(options?: RetrieveOptions<T>): Observable<IJsonResponse<T>>;
 
+    select(options?: RetrieveOptions<T>): Observable<T[]> | any;
+
     check(): OperatorFunction<IJsonResponse<any>, IJsonResponse<any>>;
+
+    setSelect(): void;
 }
 
 export type RetrieveOptions<T> = Partial<T> | Partial<IRetrieveOptions> | {[key: string]: any};

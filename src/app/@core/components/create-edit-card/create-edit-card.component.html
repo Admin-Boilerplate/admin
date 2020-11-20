@@ -1,5 +1,5 @@
 <nb-card status="{{ce.edit ? 'primary' : 'success'}}">
-    <nb-card-header>
+    <nb-card-header *ngIf="config.hasHeader">
         {{ce.verb | translate}}
     </nb-card-header>
     <nb-card-body>
@@ -7,10 +7,11 @@
             <ng-content></ng-content>
         </div>
     </nb-card-body>
-    <nb-card-footer>
+    <nb-card-footer *ngIf="config.hasFooter">
         <div class="row">
             <div class="col-12 text-right">
                 <a nbButton
+                   *ngIf="config.hasBackToList"
                    translate
                    [routerLink]="[ce.edit ? '../../' : '../']"
                    status="basic"
@@ -22,7 +23,7 @@
                         (click)="ce.update()"
                         [disabled]="ce.form.invalid"
                         status="primary"
-                        *ngIf="ce.edit">
+                        *ngIf="ce.edit && config.hasUpdate">
                     <nb-icon icon="checkmark"></nb-icon>
                     Update
                 </button>
@@ -31,7 +32,7 @@
                         (click)="ce.create()"
                         [disabled]="ce.form.invalid"
                         status="success"
-                        *ngIf="!ce.edit">
+                        *ngIf="!ce.edit && config.hasSave">
                     <nb-icon icon="save"></nb-icon>
                         Save
                 </button>

@@ -1,11 +1,13 @@
 import { Injectable, Injector } from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
+import {BreadcrumbService} from "angular-crumbs";
 
 @Injectable({
     providedIn: "root",
 })
 export class Helpers {
     public static injector: Injector;
+    public static breadcrumbs: BreadcrumbService;
     public static languages: string[] = ["el", "en"];
     public static lang: string;
 
